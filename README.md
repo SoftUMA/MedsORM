@@ -1,14 +1,12 @@
-# MedsORM
+# meds-orm
 
-### Descripción
+This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
+version 0.12.1.
 
-Aplicación para gestionar una base de datos de medicamentos.
+## Build & development
 
-Trabajo en grupo para la asignatura de Ingeniería de Software: Gestión de la 
-Información.
+Run `grunt` for building and `grunt serve` for preview.
 
-### Tecnologías
+## Testing
 
-- AngularJS
-- BookshelfJS
-- SQLite3
+Running `grunt test` will run the unit tests with karma.
