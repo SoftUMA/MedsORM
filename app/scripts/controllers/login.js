@@ -20,5 +20,16 @@ angular.module('medsOrmApp')
     	} else {
     		console.log("GO AWAY !");
     	}
-    }
+    };
+
+    // TODO finish him
+    /*
+    this.setupLoginTest = function(){
+        this.sequelize = new Sequelize('database', 'username', 'password', {
+          host: 'localhost',
+          dialect: 'sqlite',
+          storage: 'data/database.db'
+        });
+    };
+    */
   });

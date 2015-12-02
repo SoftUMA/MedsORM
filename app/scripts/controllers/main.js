@@ -8,6 +8,6 @@
  * Controller of the medsOrmApp
  */
 angular.module('medsOrmApp')
-  .controller('MainCtrl', function($scope) {
+  .controller('MainCtrl', function() {
 
   });
