@@ -9,27 +9,43 @@
  */
 angular.module('medsOrmApp')
   .controller('LoginCtrl', function() {
+    this.Sequelize = require('sequelize');
+
+    this.sequelize = new this.Sequelize('database.db', null, null, {
+      dialect: 'sqlite',
+      storage: 'data/database.db'
+    });
+
+    this.Usuario = this.sequelize.define('tUsuario', {
+      nombre: {
+        type: Sequelize.STRING,
+        primaryKey: true
+      },
+      password: {
+        type: Sequelize.STRING
+      },
+      rolName: {
+        type: Sequelize.STRING
+      }
+    }, {
+      freezeTableName: true,
+      timestamps: false
+    });
+
     this.user = "";
     this.pass = "";
-    this.correctUser = "carlosaguilar";
-    this.correctPass = "123456";
 
-    this.testLogin = function() {
-    	if (this.user === this.correctUser && this.pass === this.correctPass) {
-    		console.log("IT'S OK !!! ");
-    	} else {
-    		console.log("GO AWAY !");
-    	}
+    this.validateLogin = function(validateUserName, validatePassword) {
+      this.Usuario.findAll({
+        where: {
+          nombre: validateUserName
+        }
+      }).then(function(result) {
+        if (result[0].dataValues.password === validatePassword) {
+          console.log('Bristooooles!');
+        }
+      }).catch(function(error) {
+        console.log(error);
+      });
     };
-
-    // TODO finish him
-    /*
-    this.setupLoginTest = function(){
-        this.sequelize = new Sequelize('database', 'username', 'password', {
-          host: 'localhost',
-          dialect: 'sqlite',
-          storage: 'data/database.db'
-        });
-    };
-    */
   });

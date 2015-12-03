@@ -6,7 +6,7 @@ Group work for the course "Ingeniería de la Información", Software Engineering
 ## Technologies
 
 - AngularJS
-- BookshelfJS
+- Sequelize.js
 - SQLite3
 
 ## Info
@@ -21,3 +21,9 @@ Run `grunt` for building and `grunt serve` for preview.
 ## Testing
 
 Running `grunt test` will run the unit tests with karma.
+
+## To-Do
+
+- [ ] Get Sequelize.js to load inside the final app.
+- [ ] Application functionality.
+- [ ] Implement the application view.

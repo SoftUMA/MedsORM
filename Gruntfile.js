@@ -22,7 +22,7 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'MedsORM.app/Contents/Resources/app.nw'
   };
 
   // Define the configuration for all the tasks
@@ -362,7 +362,8 @@ module.exports = function (grunt) {
             '.htaccess',
             '*.html',
             'images/{,*/}*.{webp}',
-            'styles/fonts/{,*/}*.*'
+            'styles/fonts/{,*/}*.*',
+            '*.json'
           ]
         }, {
           expand: true,
@@ -374,6 +375,16 @@ module.exports = function (grunt) {
           cwd: 'bower_components/bootstrap/dist',
           src: 'fonts/*',
           dest: '<%= yeoman.dist %>'
+        }, {
+          expand: true,
+          cwd: 'node_modules/sqlite3',
+          src: '*',
+          dest: '<%= yeoman.dist %>/node_modules/sqlite3'
+        }, {
+          expand: true,
+          cwd: 'node_modules/sequelize',
+          src: '*',
+          dest: '<%= yeoman.dist %>/node_modules/sequelize'
         }]
       },
       styles: {

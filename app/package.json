@@ -1,0 +1,20 @@
+{
+  "main": "index.html",
+  "name": "MedsORM",
+  "description": "trabajo para gestion de la informacion",
+  "version": "0.1.0",
+  "keywords": [ "orm", "gestion-informacion", "degree" ],
+  "window": {
+    "title": "MedsORM",
+    "icon": "favicon.png",
+    "toolbar": true,
+    "frame": true,
+    "width": 800,
+    "height": 500,
+    "position": "center",
+    "resizable": "false"
+  },
+  "webkit": {
+    "plugin": true
+  }
+}
