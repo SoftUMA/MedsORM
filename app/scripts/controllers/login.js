@@ -13,7 +13,7 @@ angular.module('medsOrmApp')
 
     this.sequelize = new this.Sequelize('database.db', null, null, {
       dialect: 'sqlite',
-      storage: 'data/database.db'
+      storage: '../data/database.db'
     });
 
     this.Usuario = this.sequelize.define('tUsuario', {
