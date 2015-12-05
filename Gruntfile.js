@@ -379,12 +379,12 @@ module.exports = function (grunt) {
           expand: true,
           cwd: 'node_modules/sqlite3',
           src: '*',
-          dest: '<%= yeoman.dist %>/node_modules/sqlite3'
+          dest: '<%= yeoman.dist %>/scripts/node_modules/sqlite3'
         }, {
           expand: true,
           cwd: 'node_modules/sequelize',
           src: '*',
-          dest: '<%= yeoman.dist %>/node_modules/sequelize'
+          dest: '<%= yeoman.dist %>/scripts/node_modules/sequelize'
         }]
       },
       styles: {
