@@ -1,1 +1,26 @@
-<p>This is the about view.</p>
+<br>
+<div class="jumbotron">
+	<h1>Medicamentos</h1>
+</div>
+<br>
+<div class="row" style="border: 1px solid black;">
+	<div class="col-md-1"></div>
+	<div class="col-md-2"><small>ID_MEDICAMENTO</small></div>
+	<div class="col-md-3"><small>NOMBRE_MEDICAMENTO</small></div>
+	<div class="col-md-3"><small>CANTIDAD_DISPONIBLE</small></div>
+	<div class="col-md-2"><small>LABORATORIO</small></div>
+</div>
+<br>
+<div class="lista-medicamentos">
+	<div class="row" ng-repeat="med in main.meds">
+		<div class="col-md-1"><input type="radio" name="selectedRow" value=""></div>
+		<div class="col-md-2">{{ med.id }}</div>
+		<div class="col-md-3">{{ med.nombre }}</div>
+		<div class="col-md-3">{{ med.cantidad }}</div>
+		<div class="col-md-2">{{ med.lab }}</div>
+	</div>
+</div>
+
+<br>
+
+<p><a class="btn btn-lg btn-success" ng-click="main.testing()">Entrar&nbsp;<span class="glyphicon glyphicon-ok"></span></a></p>

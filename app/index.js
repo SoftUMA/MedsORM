@@ -132,11 +132,23 @@ io.on('connection', function(socket) {
       }
     }).then(function(result) {
       if (result[0].dataValues.password === msg.testPass) {
-        console.log('Bristooooles!');
+        io.emit('redirect', '/#/main');
       }
     }).catch(function(error) {
       console.log(error);
       io.emit('error', 'invalid login !');
+    });
+  });
+
+  socket.on('loadMeds', function(msg) {
+    console.log(msg);
+
+    Medicamento.findAll().then(function(result) {
+      console.log(result);
+      io.emit('medsResponse', result);
+    }).catch(function(error) {
+      console.log(error);
+      io.emit('error', 'No se ha podido cargar la lista de medicamentos')
     });
   });
 });

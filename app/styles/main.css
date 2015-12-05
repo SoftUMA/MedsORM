@@ -81,3 +81,23 @@ body {
     border-bottom: 0;
   }
 }
+
+.lista-medicamentos {
+  height: 250px;
+  overflow: scroll;
+}
+
+.lista-medicamentos .row:nth-child(odd) {
+  background: #eee;
+}
+
+/*
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 10px;
+}
+*/
