@@ -9,21 +9,13 @@ Group work for the course "Ingeniería de la Información", Software Engineering
 - Sequelize.js
 - SQLite3
 
-## Info
-
-This project is generated with [yo angular generator](https://github.com/yeoman/generator-angular)
-version 0.12.1.
-
 ## Build & development
 
-Run `grunt` for building and `grunt serve` for preview.
-
-## Testing
-
-Running `grunt test` will run the unit tests with karma.
+Run `node index.js` to launch the application.
 
 ## To-Do
 
-- [ ] Get Sequelize.js to load inside the final app.
+- [x] Get Sequelize.js to load inside the final app.
 - [ ] Application functionality.
 - [ ] Implement the application view.
+- [ ] Keynote.

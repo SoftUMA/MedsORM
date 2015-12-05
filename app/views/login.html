@@ -3,14 +3,28 @@
   <h1>tuputa Sesi&oacute;n</h1>
   <p class="lead">
     <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1" style="padding-right: 37px;">Usuario</span>
+      <span class="input-group-addon" style="padding-right: 37px;">Usuario</span>
       <input type="text" class="form-control" placeholder="usuario" ng-model="login.user" autofocus>
     </div>
     <br>
     <div class="input-group">
-      <span class="input-group-addon" id="basic-addon1">Contrase&ntilde;a</span>
+      <span class="input-group-addon">Contrase&ntilde;a</span>
       <input type="password" class="form-control" placeholder="********" ng-model="login.pass">
     </div>
   </p>
-  <p><a class="btn btn-lg btn-success" ng-href="#/" ng-click="login.validateLogin(login.user, login.pass)">Entrar&nbsp;<span class="glyphicon glyphicon-ok"></span></a></p>
+  <p><a class="btn btn-lg btn-success" ng-href="#/" ng-click="login.testLogin()">Entrar&nbsp;<span class="glyphicon glyphicon-ok"></span></a></p>
+</div>
+
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Error</h4>
+      </div>
+      <div class="modal-body">
+        Invalid login...
+      </div>
+    </div>
+  </div>
 </div>

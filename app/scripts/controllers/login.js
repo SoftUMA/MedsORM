@@ -9,43 +9,18 @@
  */
 angular.module('medsOrmApp')
   .controller('LoginCtrl', function() {
-    this.Sequelize = require('sequelize');
-
-    this.sequelize = new this.Sequelize('database.db', null, null, {
-      dialect: 'sqlite',
-      storage: '../data/database.db'
-    });
-
-    this.Usuario = this.sequelize.define('tUsuario', {
-      nombre: {
-        type: Sequelize.STRING,
-        primaryKey: true
-      },
-      password: {
-        type: Sequelize.STRING
-      },
-      rolName: {
-        type: Sequelize.STRING
-      }
-    }, {
-      freezeTableName: true,
-      timestamps: false
-    });
-
+    this.socket = io();
     this.user = "";
     this.pass = "";
 
-    this.validateLogin = function(validateUserName, validatePassword) {
-      this.Usuario.findAll({
-        where: {
-          nombre: validateUserName
-        }
-      }).then(function(result) {
-        if (result[0].dataValues.password === validatePassword) {
-          console.log('Bristooooles!');
-        }
-      }).catch(function(error) {
-        console.log(error);
+    this.testLogin = function() {
+      this.socket.emit('login', {
+        testUser: this.user,
+        testPass: this.pass
       });
     };
+
+    this.socket.on('error', function(data) {
+      $('#errorModal').modal({keyboard: true, show: true});
+    });
   });
