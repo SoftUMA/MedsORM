@@ -29,8 +29,5 @@ angular.module('medsOrmApp').controller('LoginCtrl', function() {
 
   this.socket.on('redirect', function(data) {
     window.location.href = data;
-    // this.myWindow = window.open('', 'myWindow', 'width=600, height=800');
-    // this.myWindow.location = window.location;
-    // this.myWindow.location.href = data;
   });
 });

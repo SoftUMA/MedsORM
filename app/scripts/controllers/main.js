@@ -15,11 +15,20 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
     id: '',
     nombre: '',
     cantidad: '',
+    color: '',
     lab: -1,
     lab_nombre: ''
   };
   this.meds = [];
   this.labs = [];
+  this.disableEdition = false;
+  this.disableButtons = false;
+
+  // this.socket.emit('userPerms', 'gimme the perms !');
+  // this.socket.on('userPermsResponse', function(data) {
+  //   console.log(data);
+  //   $('#botonMagico').click();
+  // });
 
   this.socket.emit('loadMeds', 'gimme the list !');
   this.socket.on('medsResponse', function(data) {
@@ -30,6 +39,8 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
       tmp.id = data[i].ID_MEDICAMENTO;
       tmp.nombre = data[i].NOMBRE_MEDICAMENTO;
       tmp.cantidad = data[i].CANTIDAD_DISPONIBLE;
+      tmp.color = 'black';
+      if (tmp.cantidad < 10) tmp.color = 'red';
       tmp.lab = data[i].LABORATORIO;
       that.meds.push(tmp);
     }
@@ -94,6 +105,9 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
   this.delete = function() {
     this.socket.emit('delete', this.selected);
   };
+  this.socket.on('deleteSuccess', function(data) {
+    that.socket.emit('loadMeds', 'gimme the list !');
+  });
 
   this.clean = function() {
     this.selectedRow = -1;

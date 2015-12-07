@@ -121,6 +121,8 @@ app.get('', function(req, res) {
 // > Define server behavior
 
 var totalUsers = 0;
+var rol = '';
+var permisos = {};
 
 io.on('connection', function(socket) {
   totalUsers++;
@@ -140,12 +142,41 @@ io.on('connection', function(socket) {
       }
     }).then(function(result) {
       if (result[0].dataValues.password === msg.testPass) {
-        io.emit('redirect', '/#/main');
+        rol = result[0].dataValues.rolName;
+
+        Permiso.findAll({
+          where: {
+            rolName: rol
+          }
+        }).then(function(result) {
+          permisos = {
+            BOTONES: {},
+            EDICION: {},
+            LOGIN: {},
+            LISTA: {}
+          };
+
+          for (var i = 0; i < result.length; i++) {
+            var pantalla = result[i].dataValues.pantalla;
+            permisos[pantalla].acceso = result[i].dataValues.acceso;
+            permisos[pantalla].modificacion = result[i].modificacion;
+          }
+
+          io.emit('redirect', '/#/main');
+        }).catch(function(error) {
+          // TODO send error message
+          console.log(error);
+        });
       }
     }).catch(function(error) {
       console.log(error);
       io.emit('error', 'invalid login !');
     });
+  });
+
+  socket.on('userPerms', function(msg) {
+    console.log(msg);
+    io.emit('userPermsResponse', permisos);
   });
 
   socket.on('loadMeds', function(msg) {
@@ -173,41 +204,66 @@ io.on('connection', function(socket) {
   socket.on('insert', function(msg) {
     console.log(msg);
 
-    Medicamento.create({
-      ID_MEDICAMENTO: msg.id,
-      NOMBRE_MEDICAMENTO: msg.nombre,
-      CANTIDAD_DISPONIBLE: msg.cantidad,
-      LABORATORIO: msg.lab
-    }).then(function(result) {
-      socket.emit('insertSuccess', 'good job');
-    }).catch(function(error) {
+    if (permisos['BOTONES'].modificacion) {
+      Medicamento.create({
+        ID_MEDICAMENTO: msg.id,
+        NOMBRE_MEDICAMENTO: msg.nombre,
+        CANTIDAD_DISPONIBLE: msg.cantidad,
+        LABORATORIO: msg.lab
+      }).then(function(result) {
+        socket.emit('insertSuccess', 'good job');
+      }).catch(function(error) {
+        // TODO send error message
+        console.log(error);
+      });
+    } else {
       // TODO send error message
-      console.log(error);
-    });
+      console.log('unprivileged');
+    }
   });
 
   socket.on('modify', function(msg) {
     console.log(msg);
 
-    Medicamento.update({
-      ID_MEDICAMENTO: msg.instance.id,
-      NOMBRE_MEDICAMENTO: msg.instance.nombre,
-      CANTIDAD_DISPONIBLE: msg.instance.cantidad,
-      LABORATORIO: msg.instance.lab
-    }, {
-      where: {
-        ID_MEDICAMENTO: msg.id
-      }
-    }).then(function(result) {
-      socket.emit('modifySuccess', 'good job !');
-    }).catch(function(error) {
+    if (permisos['BOTONES'].modificacion) {
+      Medicamento.update({
+        ID_MEDICAMENTO: msg.instance.id,
+        NOMBRE_MEDICAMENTO: msg.instance.nombre,
+        CANTIDAD_DISPONIBLE: msg.instance.cantidad,
+        LABORATORIO: msg.instance.lab
+      }, {
+        where: {
+          ID_MEDICAMENTO: msg.id
+        }
+      }).then(function(result) {
+        socket.emit('modifySuccess', 'good job !');
+      }).catch(function(error) {
+        // TODO send error message
+        console.log(error);
+      });
+    } else {
       // TODO send error message
-      console.log(error);
-    });
+      console.log('unprivileged');
+    }
   });
 
   socket.on('delete', function(msg) {
     console.log(msg);
+
+    if (permisos['BOTONES'].modificacion) {
+      Medicamento.destroy({
+        where: {
+          ID_MEDICAMENTO: msg.id
+        }
+      }).then(function(result) {
+        socket.emit('deleteSuccess', 'good job !');
+      }).catch(function(error) {
+        // TODO send error message
+      });
+    } else {
+      // TODO send error message
+      console.log('unprivileged');
+    }
   });
 
   socket.on('exit', function(msg) {

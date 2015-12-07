@@ -97,9 +97,26 @@ body {
 }
 
 .botones {
-  
-}
 
+}
+.button-group-justified {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+}
+.button-group-justified > .btn,
+.button-group-justified > .btn-group {
+  display: table-cell;
+  float: none;
+  width: 1%;
+}
+.button-group-justified > .btn-group .btn {
+  width: 100%;
+}
+.button-group-justified > .btn-group .dropdown-menu {
+  left: auto;
+}
 /*
 table, th, td {
   border: 1px solid black;
