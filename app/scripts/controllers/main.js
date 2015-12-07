@@ -16,13 +16,14 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
     nombre: '',
     cantidad: '',
     lab: -1,
-    lab_nombre: 'Laboratorio'
+    lab_nombre: ''
   };
   this.meds = [];
+  this.labs = [];
 
   this.socket.emit('loadMeds', 'gimme the list !');
   this.socket.on('medsResponse', function(data) {
-    console.log(data);
+    that.meds = [];
 
     for (var i = 0; i < data.length; i++) {
       var tmp = {};
@@ -36,12 +37,26 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
     $('#botonMagico').click();
   });
 
+  this.socket.emit('loadLabs', 'gimme the labs !');
+  this.socket.on('labsResponse', function(data) {
+    that.labs = [];
+
+    for (var i = 0; i < data.length; i++) {
+      var tmp = {};
+      tmp.id = data[i].ID_LABORATORIO;
+      tmp.nombre = data[i].NOMBRE_LABORATORIO;
+      that.labs.push(tmp);
+    }
+
+    $('#botonMagico').click();
+  });
+
   this.onRowSelected = function() {
     this.selected.id = this.selectedRow;
     this.socket.emit('medData', this.selectedRow);
   };
   this.socket.on('medDataResponse', function(data) {
-    that.selected.id = data.ID_MEDICAMENTO;
+    // that.selected.id = data.ID_MEDICAMENTO;
     that.selected.nombre = data.NOMBRE_MEDICAMENTO;
     that.selected.cantidad = data.CANTIDAD_DISPONIBLE;
     that.selected.lab = data.LABORATORIO;
@@ -53,20 +68,42 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
     $('#botonMagico').click();
   });
 
+  this.onLabSelected = function(labId, labNombre) {
+    this.selected.lab = labId;
+    this.selected.lab_nombre = labNombre;
+  };
+
   this.insert = function() {
     this.socket.emit('insert', this.selected);
   };
+  this.socket.on('insertSuccess', function(data) {
+    that.socket.emit('loadMeds', 'gimme the list !');
+  });
 
   this.modify = function() {
-    this.socket.emit('modify', this.selected);
+    var data = {};
+    data.id = this.selectedRow;
+    data.instance = this.selected;
+    console.log(data);
+    this.socket.emit('modify', data);
   };
+  this.socket.on('modifySuccess', function(data) {
+    that.socket.emit('loadMeds', 'gimme the list !');
+  });
 
   this.delete = function() {
     this.socket.emit('delete', this.selected);
   };
 
   this.clean = function() {
-
+    this.selectedRow = -1;
+    this.selected = {
+      id: '',
+      nombre: '',
+      cantidad: '',
+      lab: -1,
+      lab_nombre: ''
+    };
   };
 
   this.exit = function() {

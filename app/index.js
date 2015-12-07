@@ -152,11 +152,21 @@ io.on('connection', function(socket) {
     console.log(msg);
 
     Medicamento.findAll().then(function(result) {
-      console.log(result);
       io.emit('medsResponse', result);
     }).catch(function(error) {
+      // TODO send error message
       console.log(error);
-      io.emit('error', 'No se ha podido cargar la lista de medicamentos')
+    });
+  });
+
+  socket.on('loadLabs', function(msg) {
+    console.log(msg);
+
+    Laboratorio.findAll().then(function(result) {
+      io.emit('labsResponse', result);
+    }).catch(function(error) {
+      // TODO send error message
+      console.log(error);
     });
   });
 
@@ -168,11 +178,32 @@ io.on('connection', function(socket) {
       NOMBRE_MEDICAMENTO: msg.nombre,
       CANTIDAD_DISPONIBLE: msg.cantidad,
       LABORATORIO: msg.lab
+    }).then(function(result) {
+      socket.emit('insertSuccess', 'good job');
+    }).catch(function(error) {
+      // TODO send error message
+      console.log(error);
     });
   });
 
   socket.on('modify', function(msg) {
     console.log(msg);
+
+    Medicamento.update({
+      ID_MEDICAMENTO: msg.instance.id,
+      NOMBRE_MEDICAMENTO: msg.instance.nombre,
+      CANTIDAD_DISPONIBLE: msg.instance.cantidad,
+      LABORATORIO: msg.instance.lab
+    }, {
+      where: {
+        ID_MEDICAMENTO: msg.id
+      }
+    }).then(function(result) {
+      socket.emit('modifySuccess', 'good job !');
+    }).catch(function(error) {
+      // TODO send error message
+      console.log(error);
+    });
   });
 
   socket.on('delete', function(msg) {
@@ -180,10 +211,13 @@ io.on('connection', function(socket) {
   });
 
   socket.on('exit', function(msg) {
+    console.log(msg);
     socket.emit('getOut', '/#');
   });
 
   socket.on('medData', function(msg) {
+    console.log(msg);
+
     Medicamento.findAll({
       where: {
         ID_MEDICAMENTO: msg
@@ -196,12 +230,13 @@ io.on('connection', function(socket) {
   });
 
   socket.on('labName', function(msg) {
+    console.log(msg);
+
     Laboratorio.findAll({
       where: {
         ID_LABORATORIO: msg
       }
     }).then(function(result) {
-      console.log(result);
       socket.emit('labNameResponse', result[0].NOMBRE_LABORATORIO);
     }).catch(function(error) {
       console.log(error);

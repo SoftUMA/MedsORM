@@ -67,11 +67,8 @@
         {{ main.selected.lab_nombre }}
         <span class="caret"></span>
       </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 100%;">
-        <li><a href="#">Action</a></li>
-        <li><a href="#">Another action</a></li>
-        <li><a href="#">Something else here</a></li>
-        <li><a href="#">Separated link</a></li>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 100%; height: 125px; overflow-y: scroll; overflow-x: hidden;">
+        <li ng-repeat="lab in main.labs"><a ng-click="main.onLabSelected(lab.id, lab.nombre)">{{ lab.nombre }}</a></li>
         <!-- li role="separator" class="divider"></li -->
       </ul>
     </div>
