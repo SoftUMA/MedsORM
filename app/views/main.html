@@ -1,19 +1,28 @@
 <br>
-<div class="jumbotron">
-	<h1>Medicamentos</h1>
+<div class="jumbotron" style="background-color: rgb(127, 190, 222); color: white;">
+	<h1 class="">Medicamentos</h1>
 </div>
-<br>
-<div class="row" style="border: 1px solid black;">
+<br/>
+<div class="row">
+  <div class="col-md-2">
+    <center>Buscar:</center>
+  </div>
+  <div class="col-md-10">
+    <input type="text" ng-model="main.buscador" style="width: 100%;">
+  </div>
+</div>
+<br/>
+<div class="row" style="border: 1px solid #aaa; border-radius: 5px;">
 	<div class="col-md-1"></div>
 	<div class="col-md-2"><small>ID_MEDICAMENTO</small></div>
 	<div class="col-md-3"><small>NOMBRE_MEDICAMENTO</small></div>
 	<div class="col-md-3"><small>CANTIDAD_DISPONIBLE</small></div>
 	<div class="col-md-2"><small>LABORATORIO</small></div>
 </div>
-<br>
-<div class="lista-medicamentos">
-	<div class="row" ng-repeat="med in main.meds">
-		<div class="col-md-1"><input type="radio" name="selectedRow" value=""></div>
+<br/>
+<div class="lista-medicamentos clusterize-scroll" id="scrollArea">
+	<div class="row clusterize-content" ng-repeat="med in main.meds | filter:main.buscador" id="contentArea">
+		<div class="col-md-1"><input type="radio" name="selectedRow" value="{{ med.id }}" ng-model="main.selectedRow" ng-click="main.onRowSelected()"></div>
 		<div class="col-md-2">{{ med.id }}</div>
 		<div class="col-md-3">{{ med.nombre }}</div>
 		<div class="col-md-3">{{ med.cantidad }}</div>
@@ -21,6 +30,76 @@
 	</div>
 </div>
 
-<br>
+<hr/>
 
-<p><a class="btn btn-lg btn-success" ng-click="main.testing()">Entrar&nbsp;<span class="glyphicon glyphicon-ok"></span></a></p>
+<div class="row campos">
+  <div class="col-md-3">ID_MEDICAMENTO</div>
+  <div class="col-md-9">
+    <input style="width: 100%;" type="text" name="campoID" value="" ng-model="main.selected.id">
+  </div>
+</div>
+
+<br/>
+
+<div class="row campos">
+  <div class="col-md-3">NOMBRE_MEDICAMENTO</div>
+  <div class="col-md-9">
+    <input style="width: 100%;" type="text" name="campoNombre" value="" ng-model="main.selected.nombre">
+  </div>
+</div>
+
+<br/>
+
+<div class="row campos">
+  <div class="col-md-3">CANTIDAD_DISPONIBLE</div>
+  <div class="col-md-9">
+    <input style="width: 100%;" type="text" name="campoCantidad" value="" ng-model="main.selected.cantidad">
+  </div>
+</div>
+
+<br/>
+
+<div class="row campos">
+  <div class="col-md-3">LABORATORIO</div>
+  <div class="col-md-9">
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="width: 100%;">
+        {{ main.selected.lab_nombre }}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" style="width: 100%;">
+        <li><a href="#">Action</a></li>
+        <li><a href="#">Another action</a></li>
+        <li><a href="#">Something else here</a></li>
+        <li><a href="#">Separated link</a></li>
+        <!-- li role="separator" class="divider"></li -->
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr/>
+
+<div class="row botones">
+  <div class="col-md-2">
+    <a class="btn btn-danger" ng-click="main.exit()" style="width: 100%;">Salir</a>
+  </div>
+  <div class="col-md-1"></div>
+  <div class="col-md-9">
+    <div class="btn-group btn-group-justified" role="group">
+      <a type="button" class="btn btn-success" ng-click="main.insert()">Insertar</a>
+      <a type="button" class="btn btn-info" ng-click="main.modify()">Modificar</a>
+      <a type="button" class="btn btn-warning" ng-click="main.delete()">Borrar</a>
+      <a type="button" class="btn btn-primary" ng-click="main.clean()">Limpiar</a>
+    </div>
+  </div>
+</div>
+
+<br/><p><a ng-click="main.doMagic()" id="botonMagico"></a></p>
+
+<script>
+  var clusterize = new Clusterize({
+    scrollId: 'scrollArea',
+    contentId: 'contentArea'
+  });
+</script>

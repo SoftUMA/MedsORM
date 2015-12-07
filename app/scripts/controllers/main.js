@@ -10,6 +10,14 @@
 angular.module('medsOrmApp').controller('MainCtrl', function() {
   var that = this;
   this.socket = io();
+  this.selectedRow = -1;
+  this.selected = {
+    id: '',
+    nombre: '',
+    cantidad: '',
+    lab: -1,
+    lab_nombre: 'Laboratorio'
+  };
   this.meds = [];
 
   this.socket.emit('loadMeds', 'gimme the list !');
@@ -24,13 +32,49 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
       tmp.lab = data[i].LABORATORIO;
       that.meds.push(tmp);
     }
+
+    $('#botonMagico').click();
   });
 
-  this.testing = function() {
-    console.log(this.meds);
-    console.log('id: ' + this.meds[0].id);
-    console.log('nombre: ' + this.meds[0].nombre);
-    console.log('laboratorio: ' + this.meds[0].lab);
-    console.log('cantidad: ' + this.meds[0].cantidad);
+  this.onRowSelected = function() {
+    this.selected.id = this.selectedRow;
+    this.socket.emit('medData', this.selectedRow);
   };
+  this.socket.on('medDataResponse', function(data) {
+    that.selected.id = data.ID_MEDICAMENTO;
+    that.selected.nombre = data.NOMBRE_MEDICAMENTO;
+    that.selected.cantidad = data.CANTIDAD_DISPONIBLE;
+    that.selected.lab = data.LABORATORIO;
+    that.socket.emit('labName', that.selected.lab);
+  });
+  this.socket.on('labNameResponse', function(data) {
+    that.selected.lab_nombre = data;
+    console.log(that.selected);
+    $('#botonMagico').click();
+  });
+
+  this.insert = function() {
+    this.socket.emit('insert', this.selected);
+  };
+
+  this.modify = function() {
+    this.socket.emit('modify', this.selected);
+  };
+
+  this.delete = function() {
+    this.socket.emit('delete', this.selected);
+  };
+
+  this.clean = function() {
+
+  };
+
+  this.exit = function() {
+    this.socket.emit('exit', 'get me outta here !')
+  };
+  this.socket.on('getOut', function(data) {
+    window.location.href = data;
+  });
+
+  this.doMagic = function() {};
 });

@@ -103,6 +103,14 @@ app.get('/views/main.html', function(req, res) {
   res.sendFile(__dirname + '/views/main.html');
 });
 
+app.get('/bower_components/clusterize/clusterize.min.js', function(req, res) {
+  res.sendFile(__dirname + '/bower_components/clusterize/clusterize.min.js');
+});
+
+app.get('/bower_components/clusterize/clusterize.css', function(req, res) {
+  res.sendFile(__dirname + '/bower_components/clusterize/clusterize.css');
+});
+
 /*
 app.get('', function(req, res) {
   res.sendFile(__dirname + '');
@@ -149,6 +157,54 @@ io.on('connection', function(socket) {
     }).catch(function(error) {
       console.log(error);
       io.emit('error', 'No se ha podido cargar la lista de medicamentos')
+    });
+  });
+
+  socket.on('insert', function(msg) {
+    console.log(msg);
+
+    Medicamento.create({
+      ID_MEDICAMENTO: msg.id,
+      NOMBRE_MEDICAMENTO: msg.nombre,
+      CANTIDAD_DISPONIBLE: msg.cantidad,
+      LABORATORIO: msg.lab
+    });
+  });
+
+  socket.on('modify', function(msg) {
+    console.log(msg);
+  });
+
+  socket.on('delete', function(msg) {
+    console.log(msg);
+  });
+
+  socket.on('exit', function(msg) {
+    socket.emit('getOut', '/#');
+  });
+
+  socket.on('medData', function(msg) {
+    Medicamento.findAll({
+      where: {
+        ID_MEDICAMENTO: msg
+      }
+    }).then(function(result) {
+      socket.emit('medDataResponse', result[0]);
+    }).catch(function(error) {
+      console.log(error);
+    });
+  });
+
+  socket.on('labName', function(msg) {
+    Laboratorio.findAll({
+      where: {
+        ID_LABORATORIO: msg
+      }
+    }).then(function(result) {
+      console.log(result);
+      socket.emit('labNameResponse', result[0].NOMBRE_LABORATORIO);
+    }).catch(function(error) {
+      console.log(error);
     });
   });
 });
