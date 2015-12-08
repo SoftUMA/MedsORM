@@ -21,14 +21,8 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
   };
   this.meds = [];
   this.labs = [];
-  this.disableEdition = false;
-  this.disableButtons = false;
-
-  // this.socket.emit('userPerms', 'gimme the perms !');
-  // this.socket.on('userPermsResponse', function(data) {
-  //   console.log(data);
-  //   $('#botonMagico').click();
-  // });
+  this.disableEdition = true;
+  this.disableButtons = true;
 
   this.socket.emit('loadMeds', 'gimme the list !');
   this.socket.on('medsResponse', function(data) {
@@ -58,6 +52,16 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
       tmp.nombre = data[i].NOMBRE_LABORATORIO;
       that.labs.push(tmp);
     }
+
+    $('#botonMagico').click();
+  });
+
+  this.socket.emit('userPerms', 'gimme the perms !');
+  this.socket.on('userPermsResponse', function(data) {
+    console.log(data);
+
+    that.disableEdition = !data.EDICION.acceso;
+    that.disableButtons = !data.BOTONES.acceso;
 
     $('#botonMagico').click();
   });
@@ -125,6 +129,34 @@ angular.module('medsOrmApp').controller('MainCtrl', function() {
   };
   this.socket.on('getOut', function(data) {
     window.location.href = data;
+  });
+
+  this.socket.on('insertError', function(data) {
+    $('#insertModal').modal({
+      keyboard: true,
+      show: true
+    });
+  });
+
+  this.socket.on('modifyError', function(data) {
+    $('#modifyModal').modal({
+      keyboard: true,
+      show: true
+    });
+  });
+
+  this.socket.on('deleteError', function(data) {
+    $('#deleteModal').modal({
+      keyboard: true,
+      show: true
+    });
+  });
+
+  this.socket.on('unprivilegedError', function(data) {
+    $('#unprivilegedModal').modal({
+      keyboard: true,
+      show: true
+    });
   });
 
   this.doMagic = function() {};

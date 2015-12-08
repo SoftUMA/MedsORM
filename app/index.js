@@ -159,17 +159,18 @@ io.on('connection', function(socket) {
           for (var i = 0; i < result.length; i++) {
             var pantalla = result[i].dataValues.pantalla;
             permisos[pantalla].acceso = result[i].dataValues.acceso;
-            permisos[pantalla].modificacion = result[i].modificacion;
+            permisos[pantalla].modificacion = result[i].dataValues.modificacion;
           }
 
           io.emit('redirect', '/#/main');
         }).catch(function(error) {
-          // TODO send error message
+          // NOTE internal error
           console.log(error);
         });
+      } else {
+        io.emit('error', 'invalid login !');
       }
     }).catch(function(error) {
-      console.log(error);
       io.emit('error', 'invalid login !');
     });
   });
@@ -185,7 +186,7 @@ io.on('connection', function(socket) {
     Medicamento.findAll().then(function(result) {
       io.emit('medsResponse', result);
     }).catch(function(error) {
-      // TODO send error message
+      // NOTE internal error
       console.log(error);
     });
   });
@@ -196,7 +197,7 @@ io.on('connection', function(socket) {
     Laboratorio.findAll().then(function(result) {
       io.emit('labsResponse', result);
     }).catch(function(error) {
-      // TODO send error message
+      // NOTE internal error
       console.log(error);
     });
   });
@@ -213,12 +214,10 @@ io.on('connection', function(socket) {
       }).then(function(result) {
         socket.emit('insertSuccess', 'good job');
       }).catch(function(error) {
-        // TODO send error message
-        console.log(error);
+        io.emit('insertError', 'invalid data !');
       });
     } else {
-      // TODO send error message
-      console.log('unprivileged');
+      io.emit('unprivilegedError', 'no privileges');
     }
   });
 
@@ -238,12 +237,10 @@ io.on('connection', function(socket) {
       }).then(function(result) {
         socket.emit('modifySuccess', 'good job !');
       }).catch(function(error) {
-        // TODO send error message
-        console.log(error);
+        io.emit('modifyError', 'invalid data !');
       });
     } else {
-      // TODO send error message
-      console.log('unprivileged');
+      io.emit('unprivilegedError', 'no privileges');
     }
   });
 
@@ -258,11 +255,10 @@ io.on('connection', function(socket) {
       }).then(function(result) {
         socket.emit('deleteSuccess', 'good job !');
       }).catch(function(error) {
-        // TODO send error message
+        io.emit('deleteError', 'invalid data !');
       });
     } else {
-      // TODO send error message
-      console.log('unprivileged');
+      io.emit('unprivilegedError', 'no privileges');
     }
   });
 
@@ -281,6 +277,7 @@ io.on('connection', function(socket) {
     }).then(function(result) {
       socket.emit('medDataResponse', result[0]);
     }).catch(function(error) {
+      // NOTE internal error
       console.log(error);
     });
   });
@@ -295,6 +292,7 @@ io.on('connection', function(socket) {
     }).then(function(result) {
       socket.emit('labNameResponse', result[0].NOMBRE_LABORATORIO);
     }).catch(function(error) {
+      // NOTE internal error
       console.log(error);
     });
   });
