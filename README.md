@@ -16,6 +16,6 @@ Run `node index.js` to launch the application.
 ## To-Do
 
 - [x] Get Sequelize.js to load inside the final app.
-- [ ] Application functionality.
-- [ ] Implement the application view.
-- [ ] Keynote.
+- [x] Application functionality.
+- [x] Implement the application view.
+- [x] Keynote.
